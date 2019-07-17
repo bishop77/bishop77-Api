@@ -30,6 +30,11 @@ namespace ApiWeb.Controllers
             }
             return BadRequest();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         protected async Task<IActionResult> Update(T obj)
         {
             entity.Update(obj);
