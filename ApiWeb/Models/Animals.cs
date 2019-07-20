@@ -10,6 +10,7 @@ namespace ApiWeb.Models
     {
         [Key]
         public int Id_animal { get; set; }
+        [MaxLength(255)]
         public string Name { get; set; }
         public Leather Leather{ get; set; }
         public Location Location { get; set; }
