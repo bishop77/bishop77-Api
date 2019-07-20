@@ -20,6 +20,7 @@ namespace ApiWeb.Controllers
         public async Task<IActionResult> AddLether([FromBody]string Name)
         {
             var a = "5";
+            a = "Hel";
             return await base.Add(new Leather { Name = Name });
         }
         [HttpPut]
