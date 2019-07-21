@@ -4,28 +4,35 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiWeb.Controllers
 {
     [Route("[controller]/[action]")]
-    public class ValuesController : BaseApiController<Animals>
+    public class AnimalController : BaseApiController<Animals>
     {
-        public ValuesController(CreateContextModel contextModel) : base(contextModel){ }
+        public AnimalController(CreateContextModel contextModel) : base(contextModel){ }
 
         [HttpPost]
-        public async Task<IActionResult> AddAnimals(string Name, int id_leather, int id_location)
+        public async Task<IActionResult> AddAnimals([FromBody] Animals obj)
         {
-            Location location = db.Locations.FirstOrDefault(x => x.Id_location== id_location);
-            Leather leather = db.Leathers.FirstOrDefault(x => x.Id_leather == id_leather);
-            return await base.Add(new Animals { Name = Name, Location = location, Leather = leather });
+            Location location = db.Locations.FirstOrDefault(x => x.Id_location== obj.Location.Id_location);
+            Leather leather = db.Leathers.FirstOrDefault(x => x.Id_leather == obj.Leather.Id_leather);
+            obj.Location = location;
+            obj.Leather = leather;
+            return await base.Add(obj);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateAnimals(Animals obj)
+        public async Task<IActionResult> UpdateAnimals([FromBody]Animals obj)
         {
             if (obj == null)
                 BadRequest();
             if (!entity.Any(x => x.Id_animal == obj.Id_animal))
                 return NotFound();
+            Leather leather = db.Leathers.FirstOrDefault(x => x.Id_leather == obj.Leather.Id_leather);
+            Location location = db.Locations.FirstOrDefault(x => x.Id_location== obj.Location.Id_location);
+            obj.Location = location;
+            obj.Leather = leather;
             return await base.Update(obj);
         }
         [HttpDelete("{id}")]
@@ -36,7 +43,7 @@ namespace ApiWeb.Controllers
         [HttpGet]
         public IEnumerable<Animals> GetAnimals()
         {
-            return entity.ToList();
+            return entity.Include(p => p.Location).Include(p=> p.Leather).ToList();
         }
         [HttpGet]
         public IActionResult GetAnimalsById(int id)

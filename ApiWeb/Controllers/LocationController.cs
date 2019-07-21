@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ApiWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiWeb.Controllers
 {
@@ -14,29 +15,30 @@ namespace ApiWeb.Controllers
         public LocationController(CreateContextModel contextModel) : base(contextModel){ }
 
         [HttpPost]
-        public async Task<IActionResult> AddLether(string Name, int id_region)
+        public async Task<IActionResult> AddLocation([FromBody]Location obj)
         {
-            Region region = db.Regions.FirstOrDefault(x => x.Id_region == id_region);
-            return await base.Add(new Location { Name = Name, Region = region });
+            Region region = db.Regions.FirstOrDefault(x => x.Id_region == obj.Region.Id_region);
+            return await base.Add(new Location { Name = obj.Name, Region = region });
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateLether(Location obj)
+        public async Task<IActionResult> UpdateLocation([FromBody]Location obj)
         {
             if (obj == null)
                 BadRequest();
             if (!entity.Any(x => x.Id_location == obj.Id_location))
                 return NotFound();
+            obj.Region = db.Regions.FirstOrDefault(x => x.Id_region == obj.Region.Id_region);
             return await base.Update(obj);
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveLether(int id)
+        public async Task<IActionResult> RemoveLocation(int id)
         {
             return await base.Remove(entity.FirstOrDefault(x => x.Id_location == id));
         }
         [HttpGet]
-        public IEnumerable<Location> GetLocation()
+        public async Task<IEnumerable<Location>> GetLocation()
         {
-            return entity.ToList();
+           return await entity.Include(p=> p.Region).ToListAsync();
         }
         [HttpGet]
         public IActionResult GetLocationById(int id)

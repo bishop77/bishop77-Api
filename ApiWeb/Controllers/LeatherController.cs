@@ -24,7 +24,7 @@ namespace ApiWeb.Controllers
             return await base.Add(new Leather { Name = Name });
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateLether(Leather obj)
+        public async Task<IActionResult> UpdateLether([FromBody]Leather obj)
         {
             if (obj == null)
                 BadRequest();
@@ -33,7 +33,7 @@ namespace ApiWeb.Controllers
             return await base.Update(obj);
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveLether(int id)
+        public async Task<IActionResult> RemoveLether([FromBody]int id)
         {
             return await base.Remove(entity.FirstOrDefault(x => x.Id_leather == id));
         }

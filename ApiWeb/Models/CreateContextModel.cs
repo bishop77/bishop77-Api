@@ -13,7 +13,9 @@ namespace ApiWeb.Models
         public DbSet<Leather> Leathers { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Region> Regions{ get; set; }
-        public CreateContextModel(DbContextOptions<CreateContextModel> options):base(options){ }
+        public CreateContextModel(DbContextOptions<CreateContextModel> options):base(options){
+            Database.EnsureCreated();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
