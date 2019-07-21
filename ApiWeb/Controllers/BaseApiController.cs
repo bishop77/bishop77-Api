@@ -22,27 +22,44 @@ namespace ApiWeb.Controllers
 
         protected async Task<IActionResult> Add(T obj)
         {
-            if (ModelState.IsValid)
+            try
             {
                 entity.Add(obj);
                 await db.SaveChangesAsync();
                 return Ok(obj);
             }
-            return BadRequest();
+            catch(Exception exp)
+            {
+                return BadRequest(exp.Message);
+            }
         }
         protected async Task<IActionResult> Update(T obj)
         {
-            entity.Update(obj);
-            await db.SaveChangesAsync();
-            return Ok(obj);
+            try
+            {
+                entity.Update(obj);
+                await db.SaveChangesAsync();
+                return Ok(obj);
+            }
+            catch (Exception exp)
+            {
+                return BadRequest(exp.Message);
+            }
         }
         protected async Task<IActionResult> Remove(T obj)
         {
             if (obj == null)
                 return NotFound();
-            entity.Remove(obj);
-            await db.SaveChangesAsync();
-            return Ok(obj);
+            try
+            {
+                entity.Remove(obj);
+                await db.SaveChangesAsync();
+                return Ok(obj);
+            }
+            catch(Exception exp)
+            {
+                return BadRequest(exp.Message);
+            }
         }
     }
 }

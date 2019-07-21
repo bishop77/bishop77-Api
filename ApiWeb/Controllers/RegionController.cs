@@ -14,12 +14,12 @@ namespace ApiWeb.Controllers
         public RegionController(CreateContextModel contextModel) : base(contextModel){ }
 
         [HttpPost]
-        public async Task<IActionResult> AddRegion(string Name)
+        public async Task<IActionResult> AddRegion([FromBody]string Name)
         {
             return await base.Add(new Region { Name = Name });
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateRegion(Region obj)
+        public async Task<IActionResult> UpdateRegion([FromBody]Region obj)
         {
             if (obj == null)
                 BadRequest();
@@ -28,7 +28,7 @@ namespace ApiWeb.Controllers
             return await base.Update(obj);
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveRegion(int id)
+        public async Task<IActionResult> RemoveRegion([FromBody]int id)
         {
             return await base.Remove(entity.FirstOrDefault(x => x.Id_region == id));
         }
