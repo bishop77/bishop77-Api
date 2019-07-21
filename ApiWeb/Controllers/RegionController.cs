@@ -27,7 +27,7 @@ namespace ApiWeb.Controllers
                 return NotFound();
             return await base.Update(obj);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> RemoveRegion([FromBody]int id)
         {
             return await base.Remove(entity.FirstOrDefault(x => x.Id_region == id));
