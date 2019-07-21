@@ -30,8 +30,8 @@ namespace ApiWeb.Controllers
             obj.Region = db.Regions.FirstOrDefault(x => x.Id_region == obj.Region.Id_region);
             return await base.Update(obj);
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveLocation(int id)
+        [HttpDelete]
+        public async Task<IActionResult> RemoveLocation([FromBody]int id)
         {
             return await base.Remove(entity.FirstOrDefault(x => x.Id_location == id));
         }

@@ -35,8 +35,8 @@ namespace ApiWeb.Controllers
             obj.Leather = leather;
             return await base.Update(obj);
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveAnimals(int id)
+        [HttpDelete]
+        public async Task<IActionResult> RemoveAnimals([FromBody]int id)
         {
             return await base.Remove(entity.FirstOrDefault(x => x.Id_animal == id));
         }
