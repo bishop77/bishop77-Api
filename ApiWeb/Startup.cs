@@ -6,11 +6,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace ApiWeb
 {
     public class Startup
     {
+        string path = Path.Combine(Directory.GetCurrentDirectory());
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -21,9 +23,10 @@ namespace ApiWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddCors();
             services.AddDbContext<CreateContextModel>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionString")));
+                options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionString").Replace("|DataDirectory|", path)));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {
